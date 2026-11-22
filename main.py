@@ -4,11 +4,9 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import subprocess
 import uuid
-import os
 
 app = FastAPI()
 
-# Allow your website to connect to this backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -34,7 +32,7 @@ def make_clip(req: ClipRequest):
     output_path = f"/tmp/{clip_id}.mp4"
 
     cmd = [
-        "yt-dlp",
+        "python", "-m", "yt_dlp",
         "--download-sections", f"*{req.start}-{req.end}",
         "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]",
         "--merge-output-format", "mp4",
